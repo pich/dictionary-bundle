@@ -1,0 +1,12 @@
+Webit\Common\UnitBundle\Document\Unit:
+  type: document
+  fields:
+    measure:
+      type: string
+    code:
+      type: string
+      length: 32
+    symbol:
+      type: string
+    label:
+      type: string

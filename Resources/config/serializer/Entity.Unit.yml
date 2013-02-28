@@ -1,0 +1,17 @@
+Webit\Common\UnitBundle\Entity\Unit:
+  properties:
+    id:
+      type: integer
+      groups: [generic]
+    measure:
+      type: string
+      groups: [generic]
+    label:
+      type: string
+      groups: [generic]
+    symbol:
+      type: string
+      groups: [generic]
+    code:
+      type: string
+      groups: [generic]

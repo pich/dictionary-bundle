@@ -1,0 +1,21 @@
+Webit\Common\UnitBundle\Entity\Unit:
+  type: entity
+  table: webit_unit
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    measure:
+      type: string
+      length: 32
+    code:
+      type: string
+      length: 32
+    symbol:
+      type: string
+      length: 32
+    label:
+      type: string
+      length: 64

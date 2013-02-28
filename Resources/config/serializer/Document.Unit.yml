@@ -1,0 +1,19 @@
+Webit\Common\UnitBundle\Document\Unit:
+  properties:
+    measure:
+      type: string
+      groups: [generic]
+    label:
+      type: string
+      groups: [generic]
+    symbol:
+      type: string
+      groups: [generic]
+    code:
+      type: string
+      groups: [generic]
+  virtual_properties:
+    getFullSymbol:
+      serialized_name: full_symbol
+      groups: [generic]
+      

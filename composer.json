@@ -1,0 +1,30 @@
+{
+	"name" : "webit/common-dictionary-bundle",
+	"type": "symfony-bundle",
+	"description": "Web-IT Dictionary Bundle",
+	"keywords": ["web-it","dictionary"],
+	"homepage": "http://www.web-it.eu",
+	"license": "Web-IT",
+	"authors": [
+		{
+			"name": "Web-IT",
+			"homepage": "http://www.web-it.eu"
+		}
+	],
+	"repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.web-it.eu"
+        }
+    ],
+	"require": {
+		"php": ">=5.3.2",
+		"webit/phpcr-tools-bundle": "dev-master"
+	},
+	"autoload": {
+		"psr-0": {
+			"Webit\\Common\\DictionaryBundle" : ""
+		}
+	},
+	"target-dir" : "Webit/Common/DictionaryBundle"
+}

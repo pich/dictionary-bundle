@@ -1,0 +1,12 @@
+parameters:
+  webit_common_unit.unit_loader.class: Webit\Common\UnitBundle\ORM\UnitLoader
+  webit_common_unit.unit_manager.class: Webit\Common\UnitBundle\ORM\UnitManager
+
+services:
+  webit_common_unit.unit_loader:
+    class: %webit_common_unit.unit_loader.class%
+    public: false
+    arguments: [@doctrine.orm.entity_manager, %kernel.cache_dir%/units]
+  webit_common_unit.unit_manager:
+    class: %webit_common_unit.unit_manager.class%
+    arguments: [@doctrine.orm.entity_manager, @webit_common_unit.unit_provider]
