@@ -7,8 +7,6 @@ interface DictionaryItemInterface {
 	 */
 	public function getCode();
 	
-	public function setCode($code);
-	
 	/**
 	 * @return string
 	 */

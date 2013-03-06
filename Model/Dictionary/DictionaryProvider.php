@@ -18,5 +18,9 @@ class DictionaryProvider implements DictionaryProviderInterface {
 		
 		return $this->dictionaries[$dictionaryName];
 	}
+	
+	public function getDictionaries() {
+		return $this->dictionaries;
+	}
 }
 ?>

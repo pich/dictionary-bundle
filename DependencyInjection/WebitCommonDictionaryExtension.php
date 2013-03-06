@@ -1,7 +1,9 @@
 <?php
 
 namespace Webit\Common\DictionaryBundle\DependencyInjection;
-use Symfony\Component\DependencyInjection\Definition;
+
+use Webit\Common\DictionaryBundle\DependencyInjection\Definition\DictionaryDefinitionHelper;
+use Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryConfig;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -23,32 +25,35 @@ class WebitCommonDictionaryExtension extends Extension {
 
 		$loader = new Loader\YamlFileLoader($container,
 				new FileLocator(__DIR__ . '/../Resources/config'));
-
-		$storageConfig = $config[$config['storage']];
-		foreach ($storageConfig as $key => $value) {
-			$container->setParameter($this->getAlias() . '.' . $key, $value);
-		}
-		$loader->load($config['storage'] . '.yml');
-
-		$loaderDef = $container->getDefinition('webit_common_unit.unit_loader');
-		$loaderDef
-				->addArgument($container->getParameter('webit_common_unit.unit_class'));
-
-		$managerDef = $container->getDefinition('webit_common_unit.unit_manager');
-		$managerDef
-				->addArgument($container->getParameter('webit_common_unit.unit_class'));
-
 		$loader->load('services.yml');
 		
-		if($config['use_extjs']) {
-			$loader->load('extjs.yml');
+		if($config['use_orm_listener']) {
+			$def = $container->getDefinition('webit_common_dictionary.dictionary_item_aware_orm_listener');
+			$def->addTag('doctrine.event_subscriber');
 		}
-	}
-	
-	private function createDictionaries($dictionaries, $defaults) {
-		foreach($dictionaries as $dictionaryConfig) {
-			$definition = new Definition($dictionaryConfig['dictionary_class'],array($));
-			$defi
+		
+		if($config['use_phpcr_listener']) {
+			$def = $container->getDefinition('webit_common_dictionary.dictionary_item_aware_phpcr_listener');
+			$def->addTag('doctrine_phpcr.event_subscriber');
+		}
+		
+		if($config['use_serializer_listener']) {
+			$def = $container->getDefinition('webit_common_dictionary.dictionary_item_aware_serialization_listener');
+			$def->addTag('jms_serializer.event_listener',array('event'=>'serializer.post_deserialize','method'=>'postDeserialize'));
+		}
+		
+		$container->setParameter($this->getAlias().'.dictionary_orm_storage.class',$config['dictionary_defaults']['storage_orm_class']);
+			unset($config['dictionary_defaults']['storage_orm_class']);
+			
+		$container->setParameter($this->getAlias().'.dictionary_phpcr_storage.class',$config['dictionary_defaults']['storage_phpcr_class']);
+			unset($config['dictionary_defaults']['storage_orm_class']);
+		
+		$container->setParameter($this->getAlias().'.dictionary_defaults', $config['dictionary_defaults']);
+		
+		$helper = new DictionaryDefinitionHelper($container, $this->getAlias());
+		foreach($config['dictionaries'] as $dict) {
+			$dictConfig = $helper->createDictionaryConfig($dict);
+			$helper->registerDefinition($dictConfig);
 		}
 	}
 }

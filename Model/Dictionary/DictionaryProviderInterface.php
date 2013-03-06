@@ -10,5 +10,10 @@ interface DictionaryProviderInterface {
 	 * @return DictionaryInterface
 	 */
 	public function getDictionary($dictionaryName);
+	
+	/**
+	 * @return array<DictionaryInterface>
+	 */
+	public function getDictionaries();
 }
 ?>

@@ -8,13 +8,13 @@ class Dictionary implements DictionaryInterface {
 	/**
 	 * @var DictionaryStorageInterface
 	 */
-	private $storage;
+	protected $storage;
 	
 	/**
 	 * 
 	 * @var ArrayCollection
 	 */
-	private $items;
+	protected $items;
 	
 	public function __construct(DictionaryStorageInterface $storage) {
 		$this->storage = $storage;
@@ -56,7 +56,9 @@ class Dictionary implements DictionaryInterface {
 	 * @param DictionaryItemInterface $item
 	 */
 	public function updateItem(DictionaryItemInterface $item) {
-		$this->items->set($item->getCode(),$item);
+		$this->getItems()->set($item->getCode(),$item);
+		
+		return $item;
 	}
 	
 	/**
@@ -64,6 +66,10 @@ class Dictionary implements DictionaryInterface {
 	 */
 	public function removeItem(DictionaryItemInterface $item) {
 		$this->getItems()->remove($item->getCode());
+	}
+	
+	public function getItemClass() {
+		return $this->storage->getItemClass();
 	}
 	
 	public function commitChanges() {

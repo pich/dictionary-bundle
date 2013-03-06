@@ -1,6 +1,8 @@
 <?php
 namespace Webit\Common\DictionaryBundle\Model\Dictionary;
 
+use Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemInterface;
+
 interface DictionaryInterface {
 	/**
 	 * @reutrn ArrayCollection<DictionaryItemInterface>

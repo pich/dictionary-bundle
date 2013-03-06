@@ -1,19 +1,19 @@
 <?php
 namespace Webit\Common\DictionaryBundle\ORM;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\Common\EventSubscriber;
 
 use Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemAwareInterface;
 use Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemFetcher;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
-class DictionaryItemAwareListener extends ContainerAware implements EventSubscriberInterface {
-	static public function getSubscribedEvents() {
+class DictionaryItemAwareListener extends ContainerAware implements EventSubscriber {
+	public function getSubscribedEvents() {
 		return array(
-			'postLoad' => array('onPostLoad'),
-			'prePersist' => array('onPrePersist'),
-			'preUpdate' => array('onPreUpdate'),
+			'postLoad',
+			'prePersist',
+			'preUpdate',
 		);
 	}
 	
@@ -25,21 +25,21 @@ class DictionaryItemAwareListener extends ContainerAware implements EventSubscri
 		return $this->container->get('webit_common_dictionary.dictionary_item_fetcher');
 	}
 	
-	public function onPostLoad(LifecycleEventArgs $args) {
+	public function postLoad(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
 			$this->getDictionaryItemFetcher()->fetchItem($doc);
 		}
 	}
 	
-	public function onPrePersist(LifecycleEventArgs $args) {
+	public function prePersist(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
 			$this->getDictionaryItemFetcher()->fetchItemCode($doc);
 		}
 	}
 	
-	public function onPreUpdate(LifecycleEventArgs $args) {
+	public function preUpdate(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
 			$this->getDictionaryItemFetcher()->fetchItemCode($doc);

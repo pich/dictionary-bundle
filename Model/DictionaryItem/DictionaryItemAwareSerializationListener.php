@@ -1,6 +1,7 @@
 <?php
 namespace Webit\Common\DictionaryBundle\Model\DictionaryItem;
 
+use Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemAwareInterface;
 use Webit\Common\DictionaryBundle\Model\DictionaryAwareInterface;
 use Webit\Common\DictionaryBundle\Model\DictionaryFetcherInterface;
 
@@ -14,7 +15,7 @@ class DictionaryItemAwareSerializationListener extends ContainerAware {
 	
 	public function postDeserialize(Event $event) {
 		$doc = $event->getObject(); // TODO: probably change to getContex
-		if($doc instanceof DictionaryAwareInterface) {
+		if($doc instanceof DictionaryItemAwareInterface) {
 			$this->getDictionaryItemFetcher()->fetchItem($doc);
 		}
 	}

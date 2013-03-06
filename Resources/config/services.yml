@@ -1,13 +1,11 @@
 parameters:
   webit_common_dictionary.dictionary_provider.class: Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryProvider
-  webit_common_dictionary.cache.class: Doctrine\Common\Cache\FileCache
-  webit_common_dictionary.dictionary_orm_storage.class: Webit\Common\DictionaryBundle\ORM\DictionaryStorage
-  webit_common_dictionary.dictionary_phpcr_storage.class: Webit\Common\DictionaryBundle\PHPCR\DictionaryStorage
-  webit_common_dictionary.dictionary.class: Webit\Common\DictionaryBundle\Model\Dictionary\Dictionary
+  webit_common_dictionary.cache.class: Doctrine\Common\Cache\FilesystemCache
+  webit_common_dictionary.dictionary_storage_factory.class: Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryStorageFactory
   webit_common_dictionary.dictionary_item_fetcher.class: Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemFetcher
   webit_common_dictionary.dictionary_item_aware_orm_listener.class: Webit\Common\DictionaryBundle\ORM\DictionaryItemAwareListener
   webit_common_dictionary.dictionary_item_aware_phpcr_listener.class: Webit\Common\DictionaryBundle\PHPCR\DictionaryItemAwareListener
-  webit_common_dictionary.dictionary_item_aware_serialization_listener.class: Webit\Common\UnitBundle\Model\DictionaryItem\DictionaryItemAwareSerializationListener
+  webit_common_dictionary.dictionary_item_aware_serialization_listener.class: Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemAwareSerializationListener
   
 services:
   webit_common_dictionary.dictionary_provider:
@@ -15,17 +13,11 @@ services:
   webit_common_dictionary.cache:
     class: %webit_common_dictionary.cache.class%
     arguments: [%kernel.cache_dir%/dictionary,"dict"]
-  webit_common_dictionary.dictionary_orm_storage:
-    class: %webit_common_dictionary.dictionary_orm_storage.class%
-    abstract: true
-    arguments: [@webit_common_dictionary.cache, @doctrine.entity_manager]
-  webit_common_dictionary.dictionary_phpcr_storage:
-    class: %webit_common_dictionary.dictionary_phpcr_storage.class%
-    abstract: true
-    arguments: [@webit_common_dictionary.cache, @doctrine_phpcr.document_manager]
-  webit_common_dictionary.dictionary:
-    class: %webit_common_dictionary.dictionary.class%
-    abstract: true
+  webit_common_dictionary.dictionary_storage_factory:
+    class: %webit_common_dictionary.dictionary_storage_factory.class%
+    calls:
+      -
+        [setContainer,[@service_container]]
   webit_common_dictionary.dictionary_item_fetcher:
     class: %webit_common_dictionary.dictionary_item_fetcher.class%
     arguments: [@webit_common_dictionary.dictionary_provider, @annotation_reader]

@@ -1,6 +1,8 @@
 <?php
 namespace Webit\Common\DictionaryBundle\Model\DictionaryItem;
 
+use Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryProviderInterface;
+
 use Doctrine\Common\Annotations\Reader;
 
 class DictionaryItemFetcher {
@@ -22,8 +24,9 @@ class DictionaryItemFetcher {
 	public function fetchItemCode($obj) {
 		$refClass = new \ReflectionClass(get_class($obj));
 		$arProperties = $this->getProperties($refClass);
-		foreach($arProperties as $arRow) {
+		foreach($arProperties as $arRow) {			
 			$dictionaryItem = $arRow['itemProperty']->getValue($obj);
+		
 			$arRow['itemCodeProperty']->setValue($obj, $dictionaryItem ? $dictionaryItem->getCode() : null);
 		}
 	}
@@ -45,7 +48,7 @@ class DictionaryItemFetcher {
 			}
 
 			$dictItem = $dict->getItem($dictionaryItemValue);
-			if($dictionaryItem) {
+			if($dictItem) {
 				$arRow['itemProperty']->setValue($obj, $dictItem);
 			}
 		}
@@ -65,12 +68,12 @@ class DictionaryItemFetcher {
 			$dictionaryName = $itemCodeAnnotation->dictionaryName;
 			
 			$itemProperty = $refClass->getProperty($itemProperty);
-			if(!$dictionaryItemProperty) {
+			if(!$itemProperty) {
 				throw new \Exception('Source property not found');
 			}
 				
 			$property->setAccessible(true);
-			$dictionaryItemProperty->setAccessible(true);
+			$itemProperty->setAccessible(true);
 			
 			$arRow = array();
 			$arRow['itemCodeProperty'] = $property;
