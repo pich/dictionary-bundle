@@ -48,13 +48,19 @@ class DictionaryDefinitionHelper {
 		return $def;
 	}
 	
-	public function createDictionaryConfig($dictConfig) {
+	public function mergeConfig($dictConfig) {
 		$defaults = $this->container->getParameter('webit_common_dictionary.dictionary_defaults');
 		$dictConfig = array_replace_recursive($defaults, $dictConfig);
 		if(isset($dictConfig['storage_type']) && is_array($dictConfig[$dictConfig['storage_type']])) {
 			$dictConfig = array_replace($dictConfig, $dictConfig[$dictConfig['storage_type']]);
 			unset($dictConfig[$dictConfig['storage_type']]);
 		}
+		
+		return $dictConfig;
+	}
+	
+	public function createDictionaryConfig($dictConfig) {
+		$dictConfig = $this->mergeConfig($dictConfig);
 		
 		return new DictionaryConfig($dictConfig);
 	}
