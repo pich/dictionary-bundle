@@ -28,21 +28,21 @@ class DictionaryItemAwareListener extends ContainerAware implements EventSubscri
 	public function postLoad(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
-			$this->getDictionaryItemFetcher()->fetchItem($doc);
+			$this->getDictionaryItemFetcher()->fetchItem($entity);
 		}
 	}
 	
 	public function prePersist(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
-			$this->getDictionaryItemFetcher()->fetchItemCode($doc);
+			$this->getDictionaryItemFetcher()->fetchItemCode($entity);
 		}
 	}
 	
 	public function preUpdate(LifecycleEventArgs $args) {
 		$entity = $args->getEntity();
 		if($entity instanceof DictionaryItemAwareInterface) {
-			$this->getDictionaryItemFetcher()->fetchItemCode($doc);
+			$this->getDictionaryItemFetcher()->fetchItemCode($entity);
 		}
 	}
 }
