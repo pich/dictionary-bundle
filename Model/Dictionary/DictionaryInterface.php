@@ -30,6 +30,8 @@ interface DictionaryInterface {
 	 */
 	public function removeItem(DictionaryItemInterface $item);
 	
+	public function purge();
+	
 	public function commitChanges();
 }
 ?>

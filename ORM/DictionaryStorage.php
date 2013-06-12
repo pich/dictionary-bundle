@@ -14,19 +14,47 @@ class DictionaryStorage extends DictionaryCachedStorage {
 	 */
 	protected $em;
 	
-	public function __construct(Cache $cache, EntityManager $em, $dictionaryName, $itemClass) {
+	/**
+	 * @var mixed
+	 */
+	protected $root;
+	
+	/**
+	 * @var string
+	 */
+	protected $rootProperty;
+	
+	/**
+	 * @var string
+	 */
+	protected $codeProperty;
+	
+	public function __construct(Cache $cache, EntityManager $em, $dictionaryName, $itemClass, $codeProperty = 'code', $rootProperty = null, $root = null) {
 		parent::__construct($cache, $dictionaryName, $itemClass);
 		
 		$this->em = $em;
 		$this->itemClass = $itemClass;
+		
+		$this->rootProperty = $rootProperty;
+		$this->codeProperty = $codeProperty;
+		$this->root = $root;
 	}
 	
 	protected function doLoadItem($code) {
-		return $this->em->getRepository($this->itemClass)->findOneBy(array('code'=>$code));
+		$params = array($this->codeProperty => $code);
+		if($this->rootProperty) {
+			$params[$this->rootProperty] = $this->root;
+		}
+		
+		return $this->em->getRepository($this->itemClass)->findOneBy($params);
 	}
 	
 	protected function doLoad() {
-		$items = $this->em->getRepository($this->itemClass)->findAll();
+		if($this->rootProperty) {
+			$items = $this->em->getRepository($this->itemClass)->findBy(array($this->rootProperty=>$this->root));
+		} else {
+			$items = $this->em->getRepository($this->itemClass)->findAll();
+		}
 		
 		return $items;
 	} 
@@ -40,9 +68,22 @@ class DictionaryStorage extends DictionaryCachedStorage {
 		}
 		
 		foreach($items as $item) {
+			$this->updateRoot($item);
 			$this->em->persist($item);
 		}
 		$this->em->flush();
+	}
+	
+	private function updateRoot($item) {
+		if($this->rootProperty) {
+			$refObj = new \ReflectionObject($item);
+			$prop = $refObj->getProperty($this->rootProperty);
+				$prop->setAccessible(true);
+				$prop->setValue($item, $this->root);
+			$prop->setAccessible(false);
+		}
+		
+		return $item;
 	}
 }
 ?>

@@ -13,6 +13,8 @@ class DictionaryConfig {
 
 	protected $phpcrRoot;
 	
+	protected $ormRoot;
+	
 	public function __construct(array $config = array()) {
 		$this->fromArray($config);
 	}
@@ -24,6 +26,9 @@ class DictionaryConfig {
 		$this->storageType = $config['storage_type'];
 		$this->storageFactory = $config['storage_factory'];
 		$this->phpcrRoot = $config['phpcr_root'];
+		if(isset($config['orm_root'])) {
+			$this->ormRoot = $config['orm_root'];
+		}
 	}
 	
 	public function getName() {
@@ -64,6 +69,14 @@ class DictionaryConfig {
 
 	public function setPhpcrRoot($phpcrRoot) {
 		$this->phpcrRoot = $phpcrRoot;
+	}
+	
+	public function getOrmRoot() {
+		return $this->ormRoot;
+	}
+	
+	public function setOrmRoot($ormRoot) {
+		$this->ormRoot = $ormRoot;
 	}
 	
 	public function setDictionaryClass($dictionaryClass) {

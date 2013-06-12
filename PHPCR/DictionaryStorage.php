@@ -20,10 +20,16 @@ class DictionaryStorage extends DictionaryCachedStorage {
 	 */
 	protected $dictRoot;
 	
-	public function __construct(Cache $cache, DocumentManager $dm, $dictionaryName, $itemClass, $dictRoot) {
+	/**
+	 * @var string
+	 */
+	protected $codeProperty;
+	
+	public function __construct(Cache $cache, DocumentManager $dm, $dictionaryName, $itemClass, $dictRoot, $codeProperty = 'code') {
 		parent::__construct($cache, $dictionaryName, $itemClass);
 		
 		$this->dm = $dm;
+		$this->codeProperty = $codeProperty;
 		$this->setDictRoot($dictRoot);
 	}
 	
@@ -39,7 +45,7 @@ class DictionaryStorage extends DictionaryCachedStorage {
 	}
 	
 	protected function doLoadItem($code) {
-		return $this->dm->getRepository($this->itemClass)->findOneBy(array('code'=>$code));
+		return $this->dm->getRepository($this->itemClass)->findOneBy(array($this->codeProperty=>$code));
 	}
 	
 	protected function doLoad() {

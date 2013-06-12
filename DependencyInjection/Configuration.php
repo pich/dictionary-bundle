@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
         			->scalarNode('storage_factory')->end()
         			->scalarNode('storage_type')->end()
         			->scalarNode('phpcr_root')->end()
+        			->scalarNode('orm_root')->defaultNull()->end()
         	->end()
         ->end();
         

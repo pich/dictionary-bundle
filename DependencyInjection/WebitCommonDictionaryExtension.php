@@ -46,7 +46,7 @@ class WebitCommonDictionaryExtension extends Extension {
 			unset($config['dictionary_defaults']['storage_orm_class']);
 			
 		$container->setParameter($this->getAlias().'.dictionary_phpcr_storage.class',$config['dictionary_defaults']['storage_phpcr_class']);
-			unset($config['dictionary_defaults']['storage_orm_class']);
+			unset($config['dictionary_defaults']['storage_phpcr_class']);
 		
 		$container->setParameter($this->getAlias().'.dictionary_defaults', $config['dictionary_defaults']);
 		

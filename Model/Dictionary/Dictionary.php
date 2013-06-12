@@ -72,6 +72,12 @@ class Dictionary implements DictionaryInterface {
 		return $this->storage->getItemClass();
 	}
 	
+	public function purge() {
+		foreach($this->getItems() as $item) {
+			$this->removeItem($item);
+		}
+	}
+	
 	public function commitChanges() {
 		if($this->items) {
 			$this->storage->persistItems($this->items);
