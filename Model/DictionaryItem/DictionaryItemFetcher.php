@@ -26,6 +26,7 @@ class DictionaryItemFetcher {
 		$arProperties = $this->getProperties($refClass);
 		foreach($arProperties as $arRow) {			
 			$dictionaryItem = $arRow['itemProperty']->getValue($obj);
+			$code = $dictionaryItem ? $dictionaryItem->getCode() : null;
 		
 			$arRow['itemCodeProperty']->setValue($obj, $dictionaryItem ? $dictionaryItem->getCode() : null);
 		}
@@ -37,6 +38,10 @@ class DictionaryItemFetcher {
 	
 		foreach($arProperties as $arRow) {
 			$dictionaryItemValue = $arRow['itemCodeProperty']->getValue($obj);
+			if($dictionaryItemValue instanceof DictionaryItemInterface) {
+				continue;
+			}
+			
 			if(empty($dictionaryItemValue)) {
 				$arRow['itemProperty']->setValue($obj, null);
 				continue;
@@ -47,7 +52,7 @@ class DictionaryItemFetcher {
 				throw new \Exception('Dictionary named "'.$arRow['dictionaryName'].'" not found.');
 			}
 
-			$dictItem = $dict->getItem($dictionaryItemValue);
+			$dictItem = $dict->getItem($dictionaryItemValue);			
 			if($dictItem) {
 				$arRow['itemProperty']->setValue($obj, $dictItem);
 			}
@@ -64,7 +69,7 @@ class DictionaryItemFetcher {
 				continue;
 			}
 				
-			$itemProperty = $itemCodeAnnotation->itemProperty;
+			$itemProperty = $itemCodeAnnotation->itemProperty ?: $property->getName();
 			$dictionaryName = $itemCodeAnnotation->dictionaryName;
 			
 			$itemProperty = $refClass->getProperty($itemProperty);
