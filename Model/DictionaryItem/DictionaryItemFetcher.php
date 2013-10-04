@@ -24,11 +24,17 @@ class DictionaryItemFetcher {
 	public function fetchItemCode($obj) {
 		$refClass = new \ReflectionClass(get_class($obj));
 		$arProperties = $this->getProperties($refClass);
-		foreach($arProperties as $arRow) {			
+	   foreach($arProperties as $arRow) {			
 			$dictionaryItem = $arRow['itemProperty']->getValue($obj);
-			$code = $dictionaryItem ? $dictionaryItem->getCode() : null;
-		
-			$arRow['itemCodeProperty']->setValue($obj, $dictionaryItem ? $dictionaryItem->getCode() : null);
+			if($dictionaryItem !== null && !($dictionaryItem instanceof DictionaryItemInterface)) {
+			    $cls = get_class($obj);
+			    $itemPropertyName = $arRow['itemProperty']->getName();
+			    $value = is_scalar($dictionaryItem) ? $dictionaryItem : ('object of '.get_class($dictionaryItem).'class');
+			    throw new \Exception(sprintf('Property "%s" of "%s" objet must be instance of DictionaryItemInterface: "%s" given', $itemPropertyName, $cls, $value));
+			}
+			$value = $dictionaryItem ? $dictionaryItem->getCode() : null;
+
+			$arRow['itemCodeProperty']->setValue($obj, $value);
 		}
 	}
 	
