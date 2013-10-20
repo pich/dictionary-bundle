@@ -30,7 +30,7 @@ class DictionaryStorage extends DictionaryCachedStorage {
 		
 		$this->dm = $dm;
 		$this->codeProperty = $codeProperty;
-		$this->setDictRoot($dictRoot);
+		$this->dictRoot = $dictRoot;
 	}
 	
 	private function setDictRoot($dictRoot) {
@@ -41,6 +41,12 @@ class DictionaryStorage extends DictionaryCachedStorage {
 				NodeHelper::createPath($this->dm->getPhpcrSession(),$dictRoot);
 				$this->setDictRoot($dictRoot);
 			}
+		}
+	}
+	
+	private function getDictRoot() {
+		if(is_string($this->dictRoot)) {
+			$this->setDictRoot($this->dictRoot);
 		}
 	}
 	
@@ -65,7 +71,7 @@ class DictionaryStorage extends DictionaryCachedStorage {
 		foreach($items as $item) {
 			if($item->getId() == null) {
 				$item->setNodename($item->getCode());
-				$item->setParent($this->dictRoot);
+				$item->setParent($this->getDictRoot());
 			}
 			
 			$this->dm->persist($item);
