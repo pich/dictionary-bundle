@@ -48,6 +48,8 @@ class DictionaryStorage extends DictionaryCachedStorage {
 		if(is_string($this->dictRoot)) {
 			$this->setDictRoot($this->dictRoot);
 		}
+		
+		return $this->dictRoot;
 	}
 	
 	protected function doLoadItem($code) {
