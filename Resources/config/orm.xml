@@ -5,11 +5,10 @@
 
     <parameters>
         <parameter key="webit_common_dictionary.orm.dictionary_item_aware_listener.class">Webit\Common\DictionaryBundle\ORM\DictionaryItemAwareListener</parameter>
-        <parameter key="webit_common_dictionary.orm.storage.class">\Webit\Common\DictionaryBundle\ORM\DictionaryStorage</parameter>
+        <parameter key="webit_common_dictionary.orm.storage.class">Webit\Common\DictionaryBundle\ORM\DictionaryStorage</parameter>
     </parameters>
 
     <services>
-        <service id="webit_common_dictionary.orm.entity_manager" alias="doctrine_orm.entity_manager.default" />
         <service id="webit_common_dictionary.orm.dictionary_item_aware_listener" class="%webit_common_dictionary.orm.dictionary_item_aware_listener.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />

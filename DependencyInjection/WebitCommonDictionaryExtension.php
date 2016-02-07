@@ -36,7 +36,7 @@ class WebitCommonDictionaryExtension extends Extension
             $documentManager->setFactory(
                 array(new Reference('doctrine_phpcr'), 'getManager')
             );
-            $documentManager->addArgument('webit_common_dictionary.phpcr.document_manager');
+            $documentManager->addArgument($config['phpcr']['document_manager']);
             $container->setDefinition('webit_common_dictionary.phpcr.document_manager', $documentManager);
 
             $loader->load('phpcr.xml');
@@ -53,11 +53,9 @@ class WebitCommonDictionaryExtension extends Extension
             $loader->load('orm.xml');
         }
 
-        if ($container['use_serializer_listener']) {
+        if ($config['use_serializer_listener']) {
             $loader->load('jms_serializer.xml');
         }
-
-        $container->setParameter($this->getAlias() . '.dictionary_defaults', $config['dictionary_defaults']);
 
         $helper = new DictionaryDefinitionHelper($container, $this->getAlias());
         foreach ($config['dictionaries'] as $dict) {

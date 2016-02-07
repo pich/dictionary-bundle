@@ -5,7 +5,7 @@
 
     <parameters>
         <parameter key="webit_common_dictionary.phpcr.dictionary_item_aware_listener.class">Webit\Common\DictionaryBundle\PHPCR\DictionaryItemAwareListener</parameter>
-        <parameter key="webit_common_dictionary.phpcr.storage.class">\Webit\Common\DictionaryBundle\PHPCR\DictionaryStorage</parameter>
+        <parameter key="webit_common_dictionary.phpcr.storage.class">Webit\Common\DictionaryBundle\PHPCR\DictionaryStorage</parameter>
     </parameters>
 
     <services>
