@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="webit_common_dictionary.dictionary_provider.class">Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryProvider</parameter>
+        <parameter key="webit_common_dictionary.dictionary_item_fetcher.class">Webit\Common\DictionaryBundle\Model\DictionaryItem\DictionaryItemFetcher</parameter>
+        <parameter key="webit_common_dictionary.cache.class">Doctrine\Common\Cache\FilesystemCache</parameter>
+        <parameter key="webit_common_dictionary.dictionary_storage_factory.class">Webit\Common\DictionaryBundle\Model\Dictionary\DictionaryStorageFactory</parameter>
+    </parameters>
+
+    <services>
+        <service id="webit_common_dictionary.dictionary_provider" class="%webit_common_dictionary.dictionary_provider.class%">
+        </service>
+
+        <service id="webit_common_dictionary.dictionary_item_fetcher" class="%webit_common_dictionary.dictionary_item_fetcher.class%">
+            <argument type="service" id="webit_common_dictionary.dictionary_provider" />
+            <argument type="service" id="webit_common_dictionary.annotation_reader" />
+        </service>
+
+        <service id="webit_common_dictionary.cache" class="%webit_common_dictionary.cache.class%">
+            <argument type="string">%kernel.cache_dir%/dictionary</argument>
+            <argument type="string">dict</argument>
+        </service>
+
+        <service id="webit_common_dictionary.dictionary_storage_factory" class="%webit_common_dictionary.dictionary_storage_factory.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="webit_common_dictionary.annotation_reader" alias="annotation_reader" />
+    </services>
+</container>

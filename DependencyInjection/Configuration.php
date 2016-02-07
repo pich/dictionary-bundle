@@ -19,34 +19,32 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('webit_common_dictionary');
-        
+
         $rootNode
-        ->children()
-        	->scalarNode('use_orm_listener')->defaultTrue()->end()
-        	->scalarNode('use_phpcr_listener')->defaultTrue()->end()
-        	->scalarNode('use_serializer_listener')->defaultTrue()->end()
-        	->arrayNode('dictionary_defaults')->addDefaultsIfNotSet()
-        		->children()
-        			->scalarNode('dictionary_class')->defaultValue('Webit\Common\DictionaryBundle\Model\Dictionary\Dictionary')->end()
-        			->scalarNode('storage_orm_class')->defaultValue('Webit\Common\DictionaryBundle\ORM\DictionaryStorage')->end()
-        			->scalarNode('storage_phpcr_class')->defaultValue('Webit\Common\DictionaryBundle\PHPCR\DictionaryStorage')->end()
-        			->scalarNode('storage_type')->defaultValue('orm')->end()
-        			->scalarNode('storage_factory')->defaultValue('webit_common_dictionary.dictionary_storage_factory')->end()
-        			->scalarNode('phpcr_root')->defaultNull()->end()
-        		->end()
-        	->end()
-        	->arrayNode('dictionaries')
-        		->prototype('array')->children()
-        			->scalarNode('dictionary_class')->end()
-        			->scalarNode('dictionary_name')->end()
-        			->scalarNode('item_class')->end()
-        			->scalarNode('storage_factory')->end()
-        			->scalarNode('storage_type')->end()
-        			->scalarNode('phpcr_root')->end()
-        			->scalarNode('orm_root')->defaultNull()->end()
-        	->end()
-        ->end();
-        
+            ->children()
+                ->arrayNode('phpcr')->canBeEnabled()
+                    ->children()
+                        ->scalarNode('document_manager')->defaultValue('default')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('orm')->canBeEnabled()
+                    ->children()
+                        ->scalarNode('entity_manager')->defaultValue('default')->end()
+                    ->end()
+                ->end()
+                ->scalarNode('use_serializer_listener')->defaultTrue()->end()
+                ->arrayNode('dictionaries')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('dictionary_class')->end()
+                            ->scalarNode('dictionary_name')->end()
+                            ->scalarNode('item_class')->end()
+                            ->scalarNode('storage_type')->end()
+                            ->scalarNode('root')->end()
+                        ->end()
+                    ->end()
+                ->end();
+
         return $treeBuilder;
     }
 }

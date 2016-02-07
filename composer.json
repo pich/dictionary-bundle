@@ -2,7 +2,7 @@
 	"name" : "webit/common-dictionary-bundle",
 	"type": "symfony-bundle",
 	"description": "Web-IT Dictionary Bundle",
-	"keywords": ["web-it","dictionary"],
+	"keywords": ["web-it", "dictionary"],
 	"homepage": "http://www.web-it.eu",
 	"license": "Web-IT",
 	"authors": [
@@ -19,12 +19,27 @@
     ],
 	"require": {
 		"php": ">=5.3.2",
+		"symfony/symfony": "~2.5",
+		"doctrine/common": "~2.3"
+	},
+	"require-dev": {
+		"doctrine/doctrine-bundle" : "~1.2",
+		"doctrine/orm": "~2.3",
+		"doctrine/phpcr-bundle": "~1.2",
+		"doctrine/phpcr-odm": "~1.2",
+		"jackalope/jackalope-jackrabbit": "~1.2",
 		"webit/phpcr-tools-bundle": "dev-master"
 	},
 	"autoload": {
-		"psr-0": {
-			"Webit\\Common\\DictionaryBundle" : ""
+		"psr-4": {
+			"Webit\\Common\\DictionaryBundle\\" : ""
 		}
 	},
-	"target-dir" : "Webit/Common/DictionaryBundle"
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.0.x"
+		}
+	}
 }
