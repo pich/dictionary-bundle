@@ -30,6 +30,10 @@
 		"jackalope/jackalope-jackrabbit": "~1.2",
 		"webit/phpcr-tools-bundle": "dev-master"
 	},
+	"suggest": {
+		"doctrine/doctrine-bundle" : "To support Doctrine ORM",
+		"doctrine/orm": "To support Doctrine ORM"
+	},
 	"autoload": {
 		"psr-4": {
 			"Webit\\Common\\DictionaryBundle\\" : ""
