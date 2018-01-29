@@ -4,7 +4,7 @@
 	"description": "Web-IT Dictionary Bundle",
 	"keywords": ["web-it", "dictionary"],
 	"homepage": "http://www.web-it.eu",
-	"license": "Web-IT",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Web-IT",
